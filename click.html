@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+        }
+        #grfather{
+            width: 100vw;
+            height: 100vh;
+            background-color:black;
+            text-align: center;
+        }
+        #btn{
+            width: 150px;
+            height: 100px;
+            background-color: white;
+            font-size: 24px;
+            color: black;
+        }
+        /*创建弹出的div*/
+        #father{
+            width: 100vw;
+            height: 60vh;
+            background-color:lightblue;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 3;
+        }
+        /*遮挡层div*/
+        #beblock{
+            width: 100vw;
+            height: 100vh;
+            background-color:darkgrey;
+            z-index:2;
+            position: absolute;
+            top:0;
+            left: 0;;
+            opacity: 0.5;
+        }
+        /*关闭按钮*/
+        #close{
+            width: 40px;
+            height: 30px;
+            font-size: 20px;
+            background-color: cornflowerblue;
+            position: absolute;
+            top:12px;
+            right:10px;
+        }
+
+    </style>
+    <script src="onclick.js"></script>
+</head>
+<body>
+<div id="grfather"></div>
+</body>
+<script>
+    window.onload=function(){
+        //获得最大容器
+        var cont=document.getElementById("grfather");
+
+        var button=document.createElement("button");
+        button.id="btn";
+        button.innerHTML="show me";
+
+        cont.appendChild(button);
+
+        button.addEventListener("click",function(){
+//            console.log("111");
+
+//            创建一个弹出的div
+            var pop=document.createElement("div");
+            pop.id="father";
+//            创建一个关闭按钮
+            var close=document.createElement("sapn");
+            close.id="close";
+            close.innerHTML="X";
+
+//            创建一个遮罩层的div
+            var beblock=document.createElement("div");
+            beblock.id="beblock";
+
+            //创建文档碎片
+            var txt=document.createDocumentFragment();
+            pop.appendChild(close);
+            txt.appendChild(pop);
+            txt.appendChild(beblock);
+
+//            兼容
+            var e=event||window.event;
+//            把文档碎片放进最大的容器里
+            cont.appendChild(txt);
+//            阻止事件传递到父元素
+            e.cancelBubble|| e.stopPropagation();
+        });
+
+//        给最大容器绑定事件
+        cont.addEventListener("click",function(){
+            happen();
+        });
+
+        function happen(){
+            var e=event||window.event;
+            var target= e.target|| e.srcElement;
+            if(target.id!="father"){
+                cont.removeChild(document.getElementById("beblock"));
+                cont.removeChild(document.getElementById("father"));
+            }
+        }
+    }
+</script>
+</html>
